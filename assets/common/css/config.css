@@ -4,13 +4,24 @@
     font-family: Arial;
 }
 
+/* COLORS */
+
+.white {
+    color: white;
+}
+.blue {
+    color: #070955;
+}
+
+/* BACKGROUNDS */
+
 .bg-body {
     background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 .bg-cabecalho {
-    background-image: linear-gradient(120deg, #30cfd0 0%, #070967 100%);
+    background-image: linear-gradient(120deg, #30cfd0 0%, #070955 100%);
     padding: 220px 100px 230px 400px;
 }
 
@@ -33,24 +44,8 @@
 /* TAGS */
 
 h1 {
-    color: white;
     font-size: 80px;
     font-weight: bold;
-}
-
-h2 {
-    color: white;
-    font-size: 28px;
-}
-
-h3 {
-    color: #070955 font-size: 30px;
-}
-
-h5 {
-    color: #070955;
-    font-size: 24px;
-    margin-bottom: 20px;
 }
 
 hr {
