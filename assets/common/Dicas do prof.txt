@@ -1,0 +1,32 @@
+Imagem intuitiva:
+	- cara c duvidas
+	- duas pessoas a mostrar papeis
+
+Botao comecar: mudar o nome
+
+Login com local storage
+	- Botao de registo
+
+Comecar -> Login Dependendo se ta login already ou nao
+
+Criar um novo projeto:
+	- formulario
+	- titulo, categoria do titulo, curso, duvida, nome utilziador/email (contactos)
+	- guardar em localStorage
+
+
+versao facil: teabela com duvidas expandidas
+2. tabela mais compacta so com titulo da duvida e quem emitiu. abre pop up com a duvida expandida
+
+Obj JSON:
+	Login: { login: "hugo"; pass:"12345"; ip:""; }
+	Login: { login sebas; pass:12345; ip:""; }
+
+
+
+	Guardar projetos: {  }
+
+
+problema
+
+{nome:"sdfsd", email:"sdfsdf", titulo:"sdfsdf",categoria:"inf", descricao:"asdasdd asdf", resposta:"sdfsdf"}

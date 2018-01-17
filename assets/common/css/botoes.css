@@ -1,0 +1,12 @@
+.btnPublicar {
+    color: rgba(30, 143, 177, 0.692);
+    background: white;
+    font-weight: bold;
+}
+
+.btnShow {
+    background: transparent;
+    color: white;
+    font-weight: bold;
+    border: white 3px solid;
+}
