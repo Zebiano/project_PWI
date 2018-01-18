@@ -27,6 +27,7 @@
 
 .bg-botoes {
     background: rgba(30, 143, 177, 0.692);
+    padding: 80px 0px 80px 0px;
 }
 
 .descricao {
@@ -34,6 +35,10 @@
     font-weight: 700;
     line-height: 30px;
     text-align: justify;
+}
+
+.rowDescricao{
+    margin: 100px 5px 100px 5px;
 }
 
 .simbolos {
