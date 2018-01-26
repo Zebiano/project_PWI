@@ -35,7 +35,7 @@ $(document).ready(function() {
         }
     });
 
-    // Grava para o objeto "Utilizador"
+    // Grava para o objeto "Utilizador" caso todos os campos tenham sido devidamente preenchidos
     $("#btnSubmit").click(function() {
         utilizador.nome = $("#nome").val();
         utilizador.numero = $("#numero").val();
@@ -44,12 +44,19 @@ $(document).ready(function() {
         if ($("#password").val() == $("#cPassword").val()) {
             utilizador.password = $("#password").val();
         } else {
-            // Ainda tenho que ver o que acontece quando o util nao mete a mesma pass
+            alert("Confirme a plavra-passe.");
         }
         utilizador.escola = $("#dropEscola option:selected").text();
         utilizador.curso = $("#dropCurso option:selected").text();
         $.getJSON("https://api.ipify.org?format=json", function(output) {
             utilizador.ip = output.ip;
         });
+        //console.log(utilizador);
+
+        // Grava o objeto login para o array caso o objeto esteja preenchido
+        if (utilizador.nome != "" && utilizador.numero != "" && utilizador.email != "" && utilizador.password != "" && utilizador.escola != "" && utilizador.curso != "" && utilizador.ip != "") {
+            arrayLogin.push(utilizador);
+            console.log(arrayLogin);
+        }
     });
 });

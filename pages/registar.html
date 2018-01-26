@@ -40,33 +40,35 @@
             <div class="col-8">
                 <div class="card py-4">
                     <div class="card-body">
-                        <div class="form-group">
-                            <input type="text" id="nome" class="form-control" placeholder="Nome Completo">
-                            <br>
-                            <input type="number" id="numero" class="form-control" placeholder="Número">
-                            <br>
-                            <input type="email" id="email" class="form-control" placeholder="Email">
-                            <br>
-                            <input type="password" id="password" class="form-control" placeholder="Password">
-                            <br>
-                            <input type="password" id="cPassword" class="form-control" placeholder="Confirmar password">
-                            <br>
-                            <div class="form-group" id="">
-                                <label for="">Escola</label>
-                                <select class="form-control" name="" id="dropEscola">
+                        <form action="#">
+                            <div class="form-group">
+                                <input type="text" id="nome" class="form-control" placeholder="Nome Completo" required>
+                                <br>
+                                <input type="number" id="numero" class="form-control" placeholder="Número" required>
+                                <br>
+                                <input type="email" id="email" class="form-control" placeholder="Email" required>
+                                <br>
+                                <input type="password" id="password" class="form-control" placeholder="Password" required>
+                                <br>
+                                <input type="password" id="cPassword" class="form-control" placeholder="Confirmar password" required>
+                                <br>
+                                <div class="form-group" id="">
+                                    <label for="">Escola</label>
+                                    <select class="form-control" name="" id="dropEscola">
                                         <option value="vazio"></option>
                                         <option value="ESMAD">ESMAD</option>
                                         <option value="ESHT">ESHT</option>
                                 </select>
-                            </div>
-                            <div class="form-group" id="curso">
-                                <label for="" id="labelCurso">Curso</label>
-                                <select class="form-control" name="" id="dropCurso">
+                                </div>
+                                <div class="form-group" id="curso">
+                                    <label for="" id="labelCurso">Curso</label>
+                                    <select class="form-control" name="" id="dropCurso">
                                 </select>
+                                </div>
+                                <br>
+                                <button type="submit" id="btnSubmit" class="btn btn-primary">Confirmar</button>
                             </div>
-                            <br>
-                            <button type="submit" id="btnSubmit" class="btn btn-primary">Confirmar</button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
