@@ -1,6 +1,3 @@
-html, body {
-    height: 100%;
-}
 /* CLASS */
 
 .arial {
@@ -18,8 +15,8 @@ html, body {
 }
 
 /* BACKGROUNDS */
-.bg-login{
-    background-image: linear-gradient(120deg, #30cfd0 0%, #070955 100%);
+body{
+    background-color: #30cfd0;    
 }
 
 .bg-body {
@@ -59,8 +56,12 @@ h1 {
     font-weight: bold;
 }
 
+h3{
+    font-size: 20px;
+}
+
 hr {
-    border: 1px solid #04053a;
+    border: 1px solid #111224;
 }
 
 a:link, a:visited, a:hover, a:active {
