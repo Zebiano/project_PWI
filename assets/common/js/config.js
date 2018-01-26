@@ -49,6 +49,9 @@ $("#confProj").click(function () {
 
     projetos.push(new Projeto(titulo, "teste", categoria, desc, ""))
     console.log(projetos)
+
+    localStorage.setItem("projetos", JSON.stringify(projetos));
+    console.log(localStorage)
 });
     
 
