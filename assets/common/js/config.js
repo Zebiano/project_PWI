@@ -1,18 +1,33 @@
 // Variaveis globais
-var arrayLogin = [];
+var arrayUsers = [];
+var ip;
 
-// Objetos:
-var utilizador = {
-    nome: "",
-    numero: "",
-    email: "",
-    password: "",
-    escola: "",
-    curso: "",
-    ip: ""
+// Utilizadorees predefenidos
+function User(nome, numero, email, password, escola, curso, ip) {
+    this.nome = nome;
+    this.numero = numero;
+    this.email = email;
+    this.password = password;
+    this.escola = escola;
+    this.curso = curso;
+    this.ip = ip;
 }
 
 $(document).ready(function() {
+    // Obter IP do utilizador
+    $.getJSON("https://api.ipify.org?format=json", function(output) {
+        ip = output.ip;
+        arrayUsers.push(new User("Sebastião Barros", "9160272", "9160272@esmad.ipp.pt", "admin", "ESMAD", "Tecnologias e Sistemas de Informação para Web", ip));
+        arrayUsers.push(new User("Hugo Barreiro", "9160151", "9160151@esmad.ipp.pt", "admin", "ESMAD", "Tecnologias e Sistemas de Informação para Web", ip));
+    });
+
+    /*
+    // Carregar do localStorage para o array
+    users = JSON.parse(localStorage.getitem("users"));
+    */
+
+    console.log(arrayUsers);
+
     // Muda os dropdown menus consoante a escolha do utilizador
     $("#dropEscola").click(function() {
         var escola = $("#dropEscola option:selected").text();
@@ -25,7 +40,6 @@ $(document).ready(function() {
                 $("#dropCurso").append('<option value="multimedia">Multimedia</option>');
                 $("#dropCurso").append('<option value="audiovisual">Tecnologia da Comunicação Audiovisual</option>');
                 break;
-
             case 'ESHT':
                 $("#dropCurso").empty();
                 $("#dropCurso").append('<option value="GAT">Gestão de Atividades Turísticas</option>');
@@ -48,15 +62,15 @@ $(document).ready(function() {
         }
         utilizador.escola = $("#dropEscola option:selected").text();
         utilizador.curso = $("#dropCurso option:selected").text();
-        $.getJSON("https://api.ipify.org?format=json", function(output) {
-            utilizador.ip = output.ip;
-        });
-        //console.log(utilizador);
+        utilizador.ip = ip;
 
         // Grava o objeto login para o array caso o objeto esteja preenchido
         if (utilizador.nome != "" && utilizador.numero != "" && utilizador.email != "" && utilizador.password != "" && utilizador.escola != "" && utilizador.curso != "" && utilizador.ip != "") {
-            arrayLogin.push(utilizador);
-            console.log(arrayLogin);
+            arrayUsers.push(utilizador);
+            console.log(arrayUsers);
         }
+
+        // Guarda o array na localStorage
+
     });
 });
