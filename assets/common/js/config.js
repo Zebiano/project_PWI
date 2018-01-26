@@ -1,6 +1,7 @@
 // Variaveis globais
 var arrayUsers = [];
 var ip;
+var projetos = [];
 
 // Utilizadorees predefenidos
 function User(nome, numero, email, password, escola, curso, ip) {
@@ -13,9 +14,19 @@ function User(nome, numero, email, password, escola, curso, ip) {
     this.ip = ip;
 }
 
-$(document).ready(function() {
+
+function Projeto(titulo, autor, categoria, descricao, resposta) {
+    this.titulo = titulo;
+    this.autor = autor;
+    this.categoria = categoria;
+    this.descricao = descricao;
+    this.resposta = resposta;
+}
+
+
+$(document).ready(function () {
     // Obter IP do utilizador
-    $.getJSON("https://api.ipify.org?format=json", function(output) {
+    $.getJSON("https://api.ipify.org?format=json", function (output) {
         ip = output.ip;
         arrayUsers.push(new User("Sebastião Barros", "9160272", "9160272@esmad.ipp.pt", "admin", "ESMAD", "Tecnologias e Sistemas de Informação para Web", ip));
         arrayUsers.push(new User("Hugo Barreiro", "9160151", "9160151@esmad.ipp.pt", "admin", "ESMAD", "Tecnologias e Sistemas de Informação para Web", ip));
@@ -28,8 +39,24 @@ $(document).ready(function() {
 
     console.log(arrayUsers);
 
+
+
+    //ADICIONAR UM NOVO PROJETO
+$("#confProj").click(function () { 
+    var titulo = $('#txtTitulo').val();
+    var desc = $('#txtDesc').val();
+    var categoria = $('#dropCategoria option:selected').text();
+
+    projetos.push(new Projeto(titulo, "teste", categoria, desc, ""))
+    console.log(projetos)
+});
+    
+
+
+
+
     // Muda os dropdown menus consoante a escolha do utilizador
-    $("#dropEscola").click(function() {
+    $("#dropEscola").click(function () {
         var escola = $("#dropEscola option:selected").text();
         switch (escola) {
             case 'ESMAD':
@@ -50,7 +77,7 @@ $(document).ready(function() {
     });
 
     // Grava para o objeto "Utilizador" caso todos os campos tenham sido devidamente preenchidos
-    $("#btnSubmit").click(function() {
+    $("#btnSubmit").click(function () {
         utilizador.nome = $("#nome").val();
         utilizador.numero = $("#numero").val();
         utilizador.email = $("#email").val();
