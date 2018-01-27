@@ -14,7 +14,7 @@ function User(nome, numero, email, password, escola, curso, ip) {
     this.ip = ip;
 }
 
-
+// Classe de projeto
 function Projeto(titulo, autor, categoria, descricao, resposta) {
     this.titulo = titulo;
     this.autor = autor;
@@ -32,6 +32,45 @@ $(document).ready(function () {
         arrayUsers.push(new User("Hugo Barreiro", "9160151", "9160151@esmad.ipp.pt", "admin", "ESMAD", "Tecnologias e Sistemas de Informação para Web", ip));
     });
 
+    //Preencher a tabela com todos os projetos em storage
+    function carregarTabela() {
+        var projetos = JSON.parse(localStorage.getItem("projetos"));
+        console.log(projetos);
+        for (var i = 0; i < projetos.length; i++) {
+            $("#tbody").append('<tr><td>' + projetos[i].autor + '</td><td>' + projetos[i].titulo + '</td><td>' + projetos[i].categoria + '</td></tr>');
+        }
+
+        //EM CONSTRUÇÃO -------------------------------------------------
+
+        //abrir nova janela ao clicar na row da tabela
+        $('tbody tr').on('click', function () {
+           // window.location.href = "perfilProjeto.html";
+           $(this).each(function () {
+            var texto = $(this).find(".tituloProjeto").text();
+            console.log(texto)
+        });
+        })
+
+          //EM CONSTRUÇÃO----------------------------------------------
+
+
+    }
+    
+    carregarTabela()
+
+    
+
+    function loadProjeto() {
+        var text = window.location.hash.substring(1)
+
+        for (var i = 0; i < projetos.length; i++) {
+            if (projetos[i].titulo == text) {
+
+            }
+        }
+
+    }
+
     /*
     // Carregar do localStorage para o array
     users = JSON.parse(localStorage.getitem("users"));
@@ -42,18 +81,17 @@ $(document).ready(function () {
 
 
     //ADICIONAR UM NOVO PROJETO
-$("#confProj").click(function () { 
-    var titulo = $('#txtTitulo').val();
-    var desc = $('#txtDesc').val();
-    var categoria = $('#dropCategoria option:selected').text();
+    $("#confProj").click(function () {
+        var titulo = $('#txtTitulo').val();
+        var desc = $('#txtDesc').val();
+        var categoria = $('#dropCategoria option:selected').text();
 
-    projetos.push(new Projeto(titulo, "teste", categoria, desc, ""))
-    console.log(projetos)
+        projetos.push(new Projeto(titulo, "teste", categoria, desc, ""))
+        console.log(projetos)
 
-    localStorage.setItem("projetos", JSON.stringify(projetos));
-    console.log(localStorage)
-});
-    
+        localStorage.setItem("projetos", JSON.stringify(projetos));
+        console.log(localStorage)
+    });
 
 
 
