@@ -37,40 +37,50 @@ $(document).ready(function () {
         var projetos = JSON.parse(localStorage.getItem("projetos"));
         console.log(projetos);
         for (var i = 0; i < projetos.length; i++) {
-            $("#tbody").append('<tr><td>' + projetos[i].autor + '</td><td>' + projetos[i].titulo + '</td><td>' + projetos[i].categoria + '</td></tr>');
+            $("#tbody").append('<tr><td>' + projetos[i].autor + '</td><td class="tituloProjeto">' + projetos[i].titulo + '</td><td>' + projetos[i].categoria + '</td></tr>');
         }
 
-        //EM CONSTRUÇÃO -------------------------------------------------
 
         //abrir nova janela ao clicar na row da tabela
         $('tbody tr').on('click', function () {
-           // window.location.href = "perfilProjeto.html";
-           $(this).each(function () {
-            var texto = $(this).find(".tituloProjeto").text();
-            console.log(texto)
-        });
+            // window.location.href = "perfilProjeto.html";
+            $(this).each(function () {
+                var texto = $(this).find(".tituloProjeto").html();
+
+                window.location.href = 'perfilProjeto.html' + '#' + texto;
+
+            });
         })
 
-          //EM CONSTRUÇÃO----------------------------------------------
-
-
     }
-    
+
     carregarTabela()
 
-    
-
+    //ABRE OS PROJETOS NA PAGINA PERFIL DO PROJETO
     function loadProjeto() {
-        var text = window.location.hash.substring(1)
+        var texto = window.location.hash.substring(1)
+
+        var projetos = JSON.parse(localStorage.getItem("projetos"));
 
         for (var i = 0; i < projetos.length; i++) {
-            if (projetos[i].titulo == text) {
-
+         console.log(projetos[i].descricao)
+            if (projetos[i].titulo == texto && projetos[i].resposta == "") {
+                $("#perfilTitulo").append(projetos[i].titulo);
+                $("#perfilTitulo").append('<span style="font-size:15px" class="badge badge-success" id="perfilCat">' + projetos[i].categoria + '</span>');
+                $("#perfilDesc").append(projetos[i].descricao);
+                $("#perfilAutor").append(projetos[i].autor);
+                $("#perfilResposta").append('<br> <textarea name="" id="perfilResposta" cols="60" rows="10"></textarea>');
+            }
+            else if (projetos[i].titulo == texto) {
+                $("#perfilTitulo").append(projetos[i].titulo);
+                $("#perfilTitulo").append('<span style="font-size:15px" class="badge badge-success" id="perfilCat">' + projetos[i].categoria + '</span>');
+                $("#perfilDesc").append(projetos[i].descricao);
+                $("#perfilAutor").append(projetos[i].autor);
+                $("#perfilResposta").append(projetos[i].resposta);
             }
         }
-
     }
-
+    loadProjeto()
     /*
     // Carregar do localStorage para o array
     users = JSON.parse(localStorage.getitem("users"));
@@ -83,10 +93,10 @@ $(document).ready(function () {
     //ADICIONAR UM NOVO PROJETO
     $("#confProj").click(function () {
         var titulo = $('#txtTitulo').val();
-        var desc = $('#txtDesc').val();
+        var descricao = $('#txtDesc').val();
         var categoria = $('#dropCategoria option:selected').text();
 
-        projetos.push(new Projeto(titulo, "teste", categoria, desc, ""))
+        projetos.push(new Projeto(titulo, "teste", categoria, descricao, ""))
         console.log(projetos)
 
         localStorage.setItem("projetos", JSON.stringify(projetos));
