@@ -2,6 +2,7 @@
 // Arrays
 var arrayUsers = [];
 var arrayProjects = [];
+var arrayComments = [];
 
 // Variaveis
 var ip;
@@ -21,12 +22,19 @@ function User(nome, numero, email, password, escola, curso, ip) {
 }
 
 // Objeto para os projetos
-function Project(titulo, autor, categoria, descricao, resposta) {
+function Project(id, titulo, autor, categoria, descricao, comentarios) {
+    this.id = id;
     this.titulo = titulo;
     this.autor = autor;
     this.categoria = categoria;
     this.descricao = descricao;
-    this.resposta = resposta;
+    this.comentarios = arrayComments;
+}
+
+// Objeto para os comentarios
+function Comment(autor, descricao) {
+    this.autor = autor;
+    this.descricao = descricao;
 }
 
 /* --- API --- */
@@ -47,6 +55,8 @@ function getIp() {
     });
 }
 
+/* CODIGO GERAL */
+
 // Dar reset a variaveis
 function resetVariables() {
     userExiste = false;
@@ -57,8 +67,44 @@ function resetVariables() {
 function addAdminUsers() {
     arrayUsers.push(new User("Sebastião Barros", "9160272", "9160272@esmad.ipp.pt", "admin", "ESMAD", "Tecnologias e Sistemas de Informação para Web", 1));
     arrayUsers.push(new User("Hugo Barreiro", "9160151", "9160151@esmad.ipp.pt", "admin", "ESMAD", "Tecnologias e Sistemas de Informação para Web", 1));
-    console.log("Adicionado utilizadores admin com sucesso.")
+    console.log("Adicionado utilizadores admin ao array arrayUsers[] com sucesso.")
     console.log(arrayUsers);
+}
+
+// Adiciona projetos default. Se for para adicionar mais, adiciona-se aqui
+function addDefaultProjects() {
+    arrayProjects.push(new Project("-1", "Default 1", "Admin", "Programação", "Descrição default.", ""));
+    arrayProjects.push(new Project("-2", "Default 2", "Admin", "Design", "Descrição default.", ""));
+    console.log("Adicionado projetos default ao array arrayProjects[] com sucesso.")
+    console.log(arrayProjects);
+}
+
+// Preencher a tabela com todos os projetos
+function carregarTabelaProjetos() {
+    for (var i = 0; i < arrayProjects.length; i++) {
+        $("#projectsTableBody").append('<tr><td class="idProjeto">' + arrayProjects[i].id + '<td>' + arrayProjects[i].autor + '</td><td class="tituloProjeto">' + arrayProjects[i].titulo + '</td><td>' + arrayProjects[i].categoria + '</td></tr>');
+    }
+}
+
+// Preenche os dados do projeto
+function carregarPerfilProjeto() {
+    var id = window.location.hash.substring(1);
+
+    for (i = 0; i < arrayProjects.length; i++) {
+        if (id == arrayProjects[i].id) {
+            $("#perfilTitulo").append(arrayProjects[i].titulo);
+            $("#perfilMiniHeader").append('<span style="font-size:15px" class="badge badge-primary">' + arrayProjects[i].autor + '</span> <span style="font-size:15px" class="badge badge-success pull-right">' + arrayProjects[i].categoria + '</span>');
+            $("#perfilDescricao").append(arrayProjects[i].descricao);
+            if (arrayProjects[i].comentarios.length == 0) {
+                $("#perfilComentarios").append('<div class="card"><div class="card-body bg-light"><h4 class="card-title">Ainda não há comentários neste projeto.</h4></div></div><br>');
+            } else {
+                for (j = 0; j < arrayProjects[i].comentarios.length; j++) {
+                    $("#perfilComentarios").append('<div class="card"><div class="card-body bg-light"><h4 class="card-title">' + arrayProjects[i].comentarios[j].autor + '</h4><hr style="border: 1px solid lightblue"><p class="card-text">' + arrayProjects[i].comentarios[j].descricao + '</p></div></div><br>');
+                }
+            }
+            break;
+        }
+    }
 }
 
 /* --- ADICIONAR OBJETOS AOS ARRAYS --- */
@@ -78,19 +124,28 @@ function addUser() {
 }
 
 // Adicionar projetos ao array arrayProjects[]
-function addProjects(titulo, categoria, descricao) {
+function addProject() {
     arrayProjects.push(new Project(
-        $('#txtTitulo').val(),
-        activeUser.nome,
-        $('#dropCategoria option:selected').text(),
-        $('#txtDesc').val(),
+        arrayProjects.length,
+        $('#pubTitulo').val(),
+        //activeUser.nome,
+        arrayUsers[0].nome,
+        $('#pubDropCategoria option:selected').text(),
+        $('#pubDescricao').val(),
+        arrayComments
     ));
-    var titulo = $('#txtTitulo').val();
-    var categoria = $('#dropCategoria option:selected').text();
-    var descricao = $('#txtDesc').val();
+    console.log("New Project added: " + JSON.stringify(arrayProjects[arrayProjects.length - 1]));
+    //console.log(arrayProjects);
+}
 
-    arrayProjects.push(new Project(titulo, "teste", categoria, descricao, ""));
-    console.log(arrayProjects);
+// Adiciona comentarios ao array arrayComments[]
+function addComment() {
+    arrayComments.push(new Comment(
+        activeUser.autor,
+        $("#escreverComment").val()
+    ));
+    console.log("New comment added: " + JSON.stringify(arrayComments[arrayComments.length - 1]));
+    //console.log(arrayComments);
 }
 
 /* --- LOCALSTORAGE --- */
@@ -103,6 +158,7 @@ function checkLocalStorage() {
     } else {
         console.log('Nao existe a key "Users".');
         addAdminUsers();
+        saveUsers(); // Guarda o array arrayUsers[] na localStorage
     }
 
     // Verifica pela key "Projetos"
@@ -111,6 +167,8 @@ function checkLocalStorage() {
         loadProjects();
     } else {
         console.log('Nao existe a key "Projects".');
+        addDefaultProjects();
+        saveProjects(); // Guarda o array arrayProjects[] na localStorage
     }
 }
 
@@ -131,13 +189,13 @@ function loadProjects() {
 // Guarda o array arrayUsers[] na localStoarge com a key "Users"
 function saveUsers() {
     localStorage.setItem("Users", JSON.stringify(arrayUsers));
-    console.log('Guardado o arrayUsers[] na localStorage com a key "Users" com sucesso');
+    console.log('Guardado o arrayUsers[] na localStorage com a key "Users" com sucesso.');
 }
 
 // Guarda o array arrayProjects[] na localStoarge com a key "Projects"
 function saveProjects() {
     localStorage.setItem("Projects", JSON.stringify(arrayProjects));
-    console.log('Guardado o arrayProjects[] na localStorage com a key "Projects" com sucesso');
+    console.log('Guardado o arrayProjects[] na localStorage com a key "Projects" com sucesso.');
 }
 
 // Elimina o especificado User do array e atualiza a localStorage
@@ -169,7 +227,6 @@ function deleteProject(delProject) {
 $(document).ready(function () {
     getIp(); // Obtem IP do utlizador
     checkLocalStorage(); // Verifica se já existem as keys na localStorage
-    saveUsers(); // Guarda o array arrayUsers[] na localStorage
     //saveProjects(); // Guarda o array arrayprojects[] na localStorage
 
     /* --- PAGINA registar.html --- */
@@ -211,6 +268,8 @@ $(document).ready(function () {
                     addUser();
                     saveUsers();
                 }
+            } else {
+                alert("Preencha/Escolha todos os campos.");
             }
         } else {
             alert("Confirme que as palavras-passe estão corretas.");
@@ -218,7 +277,17 @@ $(document).ready(function () {
         resetVariables();
     });
 
+    /* --- PAGINA publicar.html --- */
+    // Regista um novo projeto
+    $("#btnPublicar").click(function () {
+        if ($("#pubTitulo").val() != "" && $("#pubDropCategoria").val() && $("#pubDescricao").val() != "") {
+            addProject();
+            saveProjects();
+        }
+    });
+
     /* --- PAGINA login.html --- */
+    // Verifica se as credenciais de login estao corretas, e se sim define o utilizador
     $("#btnLogin").click(function () {
         if ($("#loginNumero").val() != "" && $("#loginPassword").val() != "") {
             for (i = 0; i < arrayUsers.length; i++) {
@@ -235,35 +304,27 @@ $(document).ready(function () {
         }
     });
 
-    /*
-    // Preencher a tabela com todos os projetos em storage
-    function carregarTabela() {
-        var projetos = JSON.parse(localStorage.getItem("projetos"));
-        console.log(projetos);
-        for (var i = 0; i < projetos.length; i++) {
-            $("#tbody").append('<tr><td>' + projetos[i].autor + '</td><td class="tituloProjeto">' + projetos[i].titulo + '</td><td>' + projetos[i].categoria + '</td></tr>');
-        }
+    /* --- PAGINA projetos.html --- */
+    carregarTabelaProjetos();
+    $('#projectsTableBody tr').css('cursor', 'pointer'); // Muda o cursor   
 
-        //abrir nova janela ao clicar na row da tabela
-        $('tbody tr').on('click', function () {
-            // window.location.href = "perfilProjeto.html";
-            $(this).each(function () {
-                var texto = $(this).find(".tituloProjeto").html();
+    // Abrir pagina perfilProjeto.html ao clicar na row da tabela
+    $("#projectsTableBody tr").on('click', function () {
+        $(this).each(function () {
+            window.location.href = 'perfilProjeto.html' + '#' + $(this).find(".idProjeto").html();
+            carregarPerfilProjeto();
+        });
+    })
 
-                window.location.href = 'perfilProjeto.html' + '#' + texto;
+    /* --- PAGINA perfilProjeto.html --- */
+    carregarPerfilProjeto();
 
-            });
-        })
-    }
-
-    carregarTabela()
-
-    //ABRE OS PROJETOS NA PAGINA perfilProjeto.html
+    /*// ABRE OS PROJETOS NA PAGINA perfilProjeto.html
     function loadProjeto() {
         var texto = window.location.hash.substring(1)
         var projetos = JSON.parse(localStorage.getItem("projetos"));
 
-        for (var i = 0; i < projetos.length; i++) {
+        for (var i = 0; i < arrayProjects.length; i++) {
             console.log(projetos[i].descricao)
             if (projetos[i].titulo == texto && projetos[i].resposta == "") {
                 $("#perfilTitulo").append(projetos[i].titulo);
@@ -285,12 +346,11 @@ $(document).ready(function () {
 
     // Carregar do localStorage para o array
     //users = JSON.parse(localStorage.getitem("users"));
-    
 
-    console.log(arrayUsers);
+    //addProjects();
+    //saveProjects();*/
 
-
-    //ADICIONAR UM NOVO PROJETO
+    /*// ADICIONAR UM NOVO PROJETO
     $("#confProj").click(function () {
         var titulo = $('#txtTitulo').val();
         var descricao = $('#txtDesc').val();
