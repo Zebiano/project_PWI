@@ -1,10 +1,10 @@
-$(document).ready(function() {
+$(document).ready(function () {
     var active1 = false;
     var active2 = false;
     var active3 = false;
     var active4 = false;
 
-    $('.menu').on('mousedown touchstart', function() {
+    $('.menu').on('mousedown touchstart', function () {
 
         if (!active1) $(this).find('.menuHome').css({ 'background-color': 'gray', 'transform': 'translate(0px,125px)' });
         else $(this).find('.menuHome').css({ 'background-color': 'dimGray', 'transform': 'none' });
