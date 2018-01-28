@@ -1,7 +1,7 @@
 /* VARIAVEIS GLOBAIS */
 // Arrays
 var arrayUsers = [];
-var arrayProjetos = [];
+var arrayProjects = [];
 
 // Variaveis
 var ip;
@@ -53,7 +53,7 @@ function resetVariables() {
     //console.log("Reseted variables")
 }
 
-// Adicona utilizadores admin. Se for para adicionar mais, adiciona-se aqui. Admins têm a ip = "0"
+// Adiciona utilizadores admin. Se for para adicionar mais, adiciona-se aqui. Admins têm a ip = "0"
 function addAdminUsers() {
     arrayUsers.push(new User("Sebastião Barros", "9160272", "9160272@esmad.ipp.pt", "admin", "ESMAD", "Tecnologias e Sistemas de Informação para Web", 1));
     arrayUsers.push(new User("Hugo Barreiro", "9160151", "9160151@esmad.ipp.pt", "admin", "ESMAD", "Tecnologias e Sistemas de Informação para Web", 1));
@@ -79,7 +79,7 @@ function addUser() {
 
 // Adicionar projetos ao array arrayProjects[]
 function addProjects(titulo, categoria, descricao) {
-    arrayProjetos.push(new Project(
+    arrayProjects.push(new Project(
         $('#txtTitulo').val(),
         activeUser.nome,
         $('#dropCategoria option:selected').text(),
@@ -89,8 +89,8 @@ function addProjects(titulo, categoria, descricao) {
     var categoria = $('#dropCategoria option:selected').text();
     var descricao = $('#txtDesc').val();
 
-    arrayProjetos.push(new Project(titulo, "teste", categoria, descricao, ""));
-    console.log(arrayProjetos);
+    arrayProjects.push(new Project(titulo, "teste", categoria, descricao, ""));
+    console.log(arrayProjects);
 }
 
 /* --- LOCALSTORAGE --- */
@@ -125,18 +125,19 @@ function loadUsers() {
 function loadProjects() {
     arrayProjects = JSON.parse(localStorage.getItem("Projects"));
     console.log("Carregado Projetos da localStorage para o array arrayProjects[] com sucesso.");
-    console.log(arrayProjetos);
+    console.log(arrayProjects);
 }
 
 // Guarda o array arrayUsers[] na localStoarge com a key "Users"
 function saveUsers() {
     localStorage.setItem("Users", JSON.stringify(arrayUsers));
+    console.log('Guardado o arrayUsers[] na localStorage com a key "Users" com sucesso');
 }
 
-// Guarda o array arrayProjetos[] na localStoarge com a key "Projetos"
+// Guarda o array arrayProjects[] na localStoarge com a key "Projects"
 function saveProjects() {
     localStorage.setItem("Projects", JSON.stringify(arrayProjects));
-    console.log(localStorage);
+    console.log('Guardado o arrayProjects[] na localStorage com a key "Projects" com sucesso');
 }
 
 // Elimina o especificado User do array e atualiza a localStorage
@@ -153,10 +154,10 @@ function deleteUser(delUser) {
 }
 
 // Elimina o especificado Projeto do array e atualiza a localStorage
-function deleteProject(delpProject) {
-    for (i = 0; i < arrayProjetos.length; i++) {
-        if (arrayProjetos[i].numero == delproject) {
-            arrayProjetos.splice(i, 1);
+function deleteProject(delProject) {
+    for (i = 0; i < arrayProjects.length; i++) {
+        if (arrayProjects[i].numero == delproject) {
+            arrayProjects.splice(i, 1);
             saveProjects();
             break;
         } else {
@@ -166,15 +167,10 @@ function deleteProject(delpProject) {
 }
 
 $(document).ready(function () {
-    // Obtem IP do utlizador
-    getIp();
-
-    // Verifica se já existem as keys na localStorage
-    checkLocalStorage();
-
-    // Guarda os arrays na localStorage
-    saveUsers();
-    //saveProjects();
+    getIp(); // Obtem IP do utlizador
+    checkLocalStorage(); // Verifica se já existem as keys na localStorage
+    saveUsers(); // Guarda o array arrayUsers[] na localStorage
+    //saveProjects(); // Guarda o array arrayprojects[] na localStorage
 
     /* --- PAGINA registar.html --- */
     // Muda os dropdown menus consoante a escolha do utilizador
@@ -202,7 +198,7 @@ $(document).ready(function () {
     $("#btnRegistar").click(function () {
         if ($("#regPassword").val() == $("#regConfPassword").val()) {
             if ($("#regNome").val() != "" && $("#regNumero").val() && $("#regEmail").val() && $("#regDropEscola").val() && $("#regDropCurso").val()) {
-                // Verifica se o outilizador já esta registado
+                // Verifica se o utilizador já esta registado
                 for (i = 0; i < arrayUsers.length; i++) {
                     if (arrayUsers[i].numero == $("#regNumero").val()) {
                         alert("Esse utilizador já está registado!");
