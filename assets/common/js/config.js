@@ -1,4 +1,4 @@
-/* VARIAVEIS GLOBAIS */
+/* --- VARIAVEIS GLOBAIS --- */
 // Arrays
 var arrayUsers = [];
 var arrayProjects = [];
@@ -60,6 +60,7 @@ function getIp() {
 // Dar reset a variaveis
 function resetVariables() {
     userExiste = false;
+    activeUser;
     //console.log("Reseted variables")
 }
 
@@ -121,6 +122,7 @@ function addUser() {
     ));
     console.log("New user added: " + JSON.stringify(arrayUsers[arrayUsers.length - 1]));
     //console.log(arrayUsers);
+    alert("Novo utilizador registado com sucesso!");
 }
 
 // Adicionar projetos ao array arrayProjects[]
@@ -148,6 +150,13 @@ function addComment() {
     //console.log(arrayComments);
 }
 
+/* --- ADICIONAR OBJETOS A VARIAVEIS --- */
+// Adiciona o objeto User a variavel activeUser
+function addActiveUser(i) {
+    activeUser = arrayUsers[i];
+    //console.log(activeUser);
+}
+
 /* --- LOCALSTORAGE --- */
 // Verifica se ja estao defenidas as keys na localStorage
 function checkLocalStorage() {
@@ -160,7 +169,7 @@ function checkLocalStorage() {
         addAdminUsers();
         saveUsers(); // Guarda o array arrayUsers[] na localStorage
     }
-
+    console.log("---");
     // Verifica pela key "Projetos"
     if ("Projects" in localStorage) {
         console.log('Existe a key "Projects".');
@@ -170,20 +179,36 @@ function checkLocalStorage() {
         addDefaultProjects();
         saveProjects(); // Guarda o array arrayProjects[] na localStorage
     }
+    console.log("---");
+    // Verifica pela key "ActiveUser"
+    if ("ActiveUser" in localStorage) {
+        console.log('Existe a key "ActiveUser".');
+        loadActiveUser();
+    } else {
+        console.log('Nao existe a key "ActiveUser".');
+        saveActiveUser(); // Guarda o objeto ActiveUser na localStorage
+    }
 }
 
 // Grava os objetos que estao na localStorage para o array arrayUsers[]
 function loadUsers() {
     arrayUsers = JSON.parse(localStorage.getItem("Users"));
-    console.log("Carregado Users da localStorage para o array arrayUsers[] com sucesso.");
+    console.log("Carregado 'Users' da localStorage para o array arrayUsers[] com sucesso.");
     console.log(arrayUsers);
 }
 
 // Grava os objetos que estao na localStorage para o array arrayProjects[]
 function loadProjects() {
     arrayProjects = JSON.parse(localStorage.getItem("Projects"));
-    console.log("Carregado Projetos da localStorage para o array arrayProjects[] com sucesso.");
+    console.log("Carregado 'Projects' da localStorage para o array arrayProjects[] com sucesso.");
     console.log(arrayProjects);
+}
+
+// Grava os objetos que estao na localStorage para a variavel activeUser
+function loadActiveUser() {
+    activeUser = JSON.parse(localStorage.getItem("ActiveUser"));
+    console.log("Carregado 'ActiveUser' da localStorage para a variavel activeUser com sucesso.");
+    console.log(activeUser);
 }
 
 // Guarda o array arrayUsers[] na localStoarge com a key "Users"
@@ -196,6 +221,14 @@ function saveUsers() {
 function saveProjects() {
     localStorage.setItem("Projects", JSON.stringify(arrayProjects));
     console.log('Guardado o arrayProjects[] na localStorage com a key "Projects" com sucesso.');
+}
+
+// Guarda o Objeto activeUser na localStoarge com a key "ActiveUser"
+function saveActiveUser() {
+    if (activeUser != undefined) {
+        localStorage.setItem("ActiveUser", JSON.stringify(activeUser));
+        console.log('Guardado o objeto activeUser na localStorage com a key "ActiveUser" com sucesso.');
+    }
 }
 
 // Elimina o especificado User do array e atualiza a localStorage
@@ -224,10 +257,19 @@ function deleteProject(delProject) {
     }
 }
 
+// Elimina o activeUser da localStorage
+function deleteActiveUser(delActiveUser) {
+    alert("User " + activeUser.nome + " (" + activeUser.numero + ") successfully logged out.");
+    localStorage.removeItem("ActiveUser");
+    resetVariables();
+}
+
+/* --- CODIGO PARA CORRER QUANDO O DOCUMENTO ESTIVER PRONTO --- */
 $(document).ready(function () {
     getIp(); // Obtem IP do utlizador
+    console.log("---");
     checkLocalStorage(); // Verifica se já existem as keys na localStorage
-    //saveProjects(); // Guarda o array arrayprojects[] na localStorage
+    console.log("---");
 
     /* --- PAGINA registar.html --- */
     // Muda os dropdown menus consoante a escolha do utilizador
@@ -267,9 +309,8 @@ $(document).ready(function () {
                 if (userExiste == false) {
                     addUser();
                     saveUsers();
+                    window.location.href = "login.html";
                 }
-            } else {
-                alert("Preencha/Escolha todos os campos.");
             }
         } else {
             alert("Confirme que as palavras-passe estão corretas.");
@@ -293,20 +334,26 @@ $(document).ready(function () {
             for (i = 0; i < arrayUsers.length; i++) {
                 if (arrayUsers[i].numero == $("#loginNumero").val() && arrayUsers[i].password == $("#loginPassword").val()) {
                     // Define o utilizador que fez login
-                    activeUser = arrayUsers[i];
-                    //alert(JSON.stringify(activeUser));
+                    addActiveUser(i);
+                    saveActiveUser();
+                    alert("Credenciais corretas, login com sucesso.");
+                    window.location.href = "../home.html";
                     break;
-                } else {
+                } else if (i == arrayUsers.length - 1) {
                     alert("Credenciais incorretas, tente novamente.");
-                    break;
                 }
             }
         }
     });
 
     /* --- PAGINA projetos.html --- */
-    carregarTabelaProjetos();
-    $('#projectsTableBody tr').css('cursor', 'pointer'); // Muda o cursor   
+    // Muda o cursor
+    $('#projectsTableBody tr').css('cursor', 'pointer');
+
+    // Carrega os dados da tabela caso o utlizador estiver na pagina projetos.html
+    if (window.location.pathname.indexOf("pages/projetos.html")) {
+        carregarTabelaProjetos();
+    }
 
     // Abrir pagina perfilProjeto.html ao clicar na row da tabela
     $("#projectsTableBody tr").on('click', function () {
@@ -316,53 +363,12 @@ $(document).ready(function () {
         });
     })
 
-    /* GERAR FOOTER */
-    $(".bottomFooter").append('<div class="row"><div class="col-4 align-middle"><img src="../assets/common/img/logoPB.png" alt="LOGO"></div><div class="col-4 align-middle"><a class="link" href="https://cdn.menprovement.com/wp-content/uploads/2014/10/cool-guy1.jpg">Sobre nós</a></div><div class="col-4"><h4>Contactos</h4><p>9160151@esmad.ipp.pt</p><p>9160272@esmad.ipp.pt</p></div></div>');
-
     /* --- PAGINA perfilProjeto.html --- */
-    carregarPerfilProjeto();
-
-    /*// ABRE OS PROJETOS NA PAGINA perfilProjeto.html
-    function loadProjeto() {
-        var texto = window.location.hash.substring(1)
-        var projetos = JSON.parse(localStorage.getItem("projetos"));
-
-        for (var i = 0; i < arrayProjects.length; i++) {
-            console.log(projetos[i].descricao)
-            if (projetos[i].titulo == texto && projetos[i].resposta == "") {
-                $("#perfilTitulo").append(projetos[i].titulo);
-                $("#perfilTitulo").append('<span style="font-size:15px" class="badge badge-success" id="perfilCat">' + projetos[i].categoria + '</span>');
-                $("#perfilDesc").append(projetos[i].descricao);
-                $("#perfilAutor").append(projetos[i].autor);
-                $("#perfilResposta").append('<br> <textarea name="" id="perfilResposta" cols="60" rows="10"></textarea>');
-            }
-            else if (projetos[i].titulo == texto) {
-                $("#perfilTitulo").append(projetos[i].titulo);
-                $("#perfilTitulo").append('<span style="font-size:15px" class="badge badge-success" id="perfilCat">' + projetos[i].categoria + '</span>');
-                $("#perfilDesc").append(projetos[i].descricao);
-                $("#perfilAutor").append(projetos[i].autor);
-                $("#perfilResposta").append(projetos[i].resposta);
-            }
-        }
+    // Carrega os dados do projeto caso o utlizador estiver na pagina perfilProjeto.html
+    if (window.location.pathname.indexOf("pages/perfilProjeto.html")) {
+        carregarPerfilProjeto();
     }
-    loadProjeto()
 
-    // Carregar do localStorage para o array
-    //users = JSON.parse(localStorage.getitem("users"));
-
-    //addProjects();
-    //saveProjects();*/
-
-    /*// ADICIONAR UM NOVO PROJETO
-    $("#confProj").click(function () {
-        var titulo = $('#txtTitulo').val();
-        var descricao = $('#txtDesc').val();
-        var categoria = $('#dropCategoria option:selected').text();
-
-        projetos.push(new Project(titulo, "teste", categoria, descricao, ""))
-        console.log(arrayProjects)
-
-        localStorage.setItem("projetos", JSON.stringify(arrayProjects));
-        console.log(localStorage)
-    });*/
+    /* --- GERAR FOOTER --- */
+    $(".bottomFooter").append('<div class="row"><div class="col-4 align-middle"><img src="../assets/common/img/logoPB.png" alt="LOGO"></div><div class="col-4 align-middle"><a class="link" href="https://cdn.menprovement.com/wp-content/uploads/2014/10/cool-guy1.jpg">Sobre nós</a></div><div class="col-4"><h4>Contactos</h4><p>9160151@esmad.ipp.pt</p><p>9160272@esmad.ipp.pt</p></div></div>');
 });
