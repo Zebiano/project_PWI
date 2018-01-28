@@ -23,58 +23,55 @@
     <link rel="stylesheet" href="../assets/common/css/footer.css">
 </head>
 
-<body class="bg-body">
+<body class="bg-primary container-fluid">
     <!--MENU COMUM A TODAS AS PAGINAS-->
 
     <br>
-    <div class="container bg-botoes">
-        <br>
-        <div>
-            <center>
-                <h2 class="blue">Regista-te na nossa página!</h2>
-            </center>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col-8">
-                <div class="card py-4">
-                    <div class="card-body">
-                        <form action="#">
-                            <div class="form-group">
-                                <input type="text" id="regNome" class="form-control" placeholder="Nome Completo" required>
-                                <br>
-                                <input type="number" id="regNumero" class="form-control" placeholder="Número" required>
-                                <br>
-                                <input type="email" id="regEmail" class="form-control" placeholder="Email" required>
-                                <br>
-                                <input type="password" id="regPassword" class="form-control" placeholder="Password" required>
-                                <br>
-                                <input type="password" id="regConfPassword" class="form-control" placeholder="Confirmar password" required>
-                                <br>
-                                <div class="form-group" id="">
-                                    <label for="">Escola</label>
-                                    <select class="form-control" name="" id="regDropEscola">
-                                        <option value="vazio"></option>
-                                        <option value="ESMAD">ESMAD</option>
-                                        <option value="ESHT">ESHT</option>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <div class="card p-5">
+                <div class="card-body">
+                    <center>
+                        <h2 class="blue pb-4">Regista-te na nossa página!</h2>
+                    </center>
+                    <form action="#">
+                        <div class="form-group">
+                            <input type="text" id="regNome" class="form-control" placeholder="Nome Completo" required>
+                            <br>
+                            <input type="number" id="regNumero" class="form-control" placeholder="Número" required>
+                            <br>
+                            <input type="email" id="regEmail" class="form-control" placeholder="Email" required>
+                            <br>
+                            <input type="password" id="regPassword" class="form-control" placeholder="Password" required>
+                            <br>
+                            <input type="password" id="regConfPassword" class="form-control" placeholder="Confirmar password" required>
+                            <br>
+                            <div class="form-group" id="">
+                                <label for="">Escola</label>
+                                <select class="form-control" name="" id="regDropEscola">
+                                    <option value="vazio"></option>
+                                    <option value="ESMAD">ESMAD</option>
+                                    <option value="ESHT">ESHT</option>
                                 </select>
-                                </div>
-                                <div class="form-group" id="curso">
-                                    <label for="" id="labelCurso">Curso</label>
-                                    <select class="form-control" name="" id="regDropCurso">
-                                </select>
-                                </div>
-                                <br>
-                                <button type="submit" id="btnRegistar" class="btn btn-primary">Confirmar</button>
                             </div>
-                        </form>
-                    </div>
+                            <div class="form-group" id="curso">
+                                <label for="" id="labelCurso">Curso</label>
+                                <select class="form-control" name="" id="regDropCurso">
+                                </select>
+                            </div>
+                            <br>
+                            <button type="submit" id="btnRegistar" class="btn btn-primary btn-lg float-right">Confirmar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="col-2"></div>
         </div>
+        <div class="col-4"></div>
     </div>
+
 
     <!-- JQuery -->
     <script src="../assets/libraries/jquery/3.2.1/jquery-3.2.1.min.js"></script>

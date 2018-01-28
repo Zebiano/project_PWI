@@ -1,15 +1,12 @@
-.footer {
-    background: #04053a;
-    color: white;
-    padding: 80px 0px 80px 0px;
+.bottomFooter {
     position: absolute;
     right: 0;
     bottom: 0;
     left: 0;
 }
 
-.hFooter{
-    background: #04053a;
+.footer{
+    background: #212529;
     color: white;
-    padding: 80px 0px 80px 0px;
+    padding: 50px 0px 10px 0px;
 }
