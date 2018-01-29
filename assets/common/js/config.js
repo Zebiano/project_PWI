@@ -94,7 +94,7 @@ function addDefaultProjects() {
 // Preencher a tabela com todos os projetos
 function carregarTabelaProjetos() {
     for (var i = 0; i < arrayProjects.length; i++) {
-        $("#projectsTableBody").append('<tr><td class="idProjeto">' + arrayProjects[i].id + '<td>' + arrayProjects[i].autor + '</td><td class="tituloProjeto">' + arrayProjects[i].titulo + '</td><td>' + arrayProjects[i].categoria + '</td></tr>');
+        $("#projectsTableBody").append('<tr><td>' + arrayProjects[i].autor + '</td><td class="tituloProjeto">' + arrayProjects[i].titulo + '</td><td>' + arrayProjects[i].categoria + '</td></tr>');
     }
 }
 
