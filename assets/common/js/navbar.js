@@ -41,7 +41,7 @@ $(document).ready(function () {
 
     $("#navIconSingIn").click(function () {
         var pages = checkPath();
-        if ("ActiveUser" in localStorage) {
+        if (checkLogin() == true) {
             deleteActiveUser();
             if (pages == false) {
                 window.location.href = 'home.html'
@@ -66,10 +66,18 @@ $(document).ready(function () {
     });
     $("#navIconPlus").click(function () {
         var pages = checkPath();
-        if (pages == false) {
-            window.location.href = 'pages/publicar.html'
+        if (checkLogin() == true) {
+            if (pages == false) {
+                window.location.href = 'pages/publicar.html'
+            } else {
+                window.location.href = 'publicar.html'
+            }
         } else {
-            window.location.href = 'publicar.html'
+            if (pages == false) {
+                window.location.href = 'pages/login.html' + "#publicar"
+            } else {
+                window.location.href = 'login.html' + "#publicar"
+            }
         }
     });
     $("#navIconHome").click(function () {
@@ -84,7 +92,6 @@ $(document).ready(function () {
 
 function checkPath() {
     var path = window.location.pathname;
-    console.log(path.indexOf("pages"));
     if (path.indexOf("pages") == -1) {
         return false
     } else {

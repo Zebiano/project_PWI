@@ -56,12 +56,20 @@ function getIp() {
 }
 
 /* CODIGO GERAL */
-
 // Dar reset a variaveis
 function resetVariables() {
     userExiste = false;
     activeUser;
     //console.log("Reseted variables")
+}
+
+// Devolve true caso o utilizador esteja logged in
+function checkLogin() {
+    if ("ActiveUser" in localStorage) {
+        return true
+    } else {
+        return false
+    }
 }
 
 // Adiciona utilizadores admin. Se for para adicionar mais, adiciona-se aqui. Admins têm a ip = "0"
@@ -130,14 +138,14 @@ function addProject() {
     arrayProjects.push(new Project(
         arrayProjects.length,
         $('#pubTitulo').val(),
-        //activeUser.nome,
-        arrayUsers[0].nome,
+        activeUser.nome,
         $('#pubDropCategoria option:selected').text(),
         $('#pubDescricao').val(),
         arrayComments
     ));
     console.log("New Project added: " + JSON.stringify(arrayProjects[arrayProjects.length - 1]));
     //console.log(arrayProjects);
+    alert("Novo projeto registado com sucesso!");
 }
 
 // Adiciona comentarios ao array arrayComments[]
@@ -148,6 +156,7 @@ function addComment() {
     ));
     console.log("New comment added: " + JSON.stringify(arrayComments[arrayComments.length - 1]));
     //console.log(arrayComments);
+    alert("Novo comentário registado com sucesso!");
 }
 
 /* --- ADICIONAR OBJETOS A VARIAVEIS --- */
@@ -271,6 +280,16 @@ $(document).ready(function () {
     checkLocalStorage(); // Verifica se já existem as keys na localStorage
     console.log("---");
 
+    /* --- PAGINA home.html --- */
+    // So quem esta logged-in pode publicar
+    $("#btnHomePublicar").click(function () {
+        if (checkLogin() == true) {
+            window.location.href = "pages/publicar.html";
+        } else {
+            window.location.href = "pages/login.html" + "#publicar";
+        }
+    });
+
     /* --- PAGINA registar.html --- */
     // Muda os dropdown menus consoante a escolha do utilizador
     $("#regDropEscola").click(function () {
@@ -309,7 +328,7 @@ $(document).ready(function () {
                 if (userExiste == false) {
                     addUser();
                     saveUsers();
-                    window.location.href = "login.html";
+                    $('#formRegistar').attr('action', 'login.html');
                 }
             }
         } else {
@@ -322,8 +341,13 @@ $(document).ready(function () {
     // Regista um novo projeto
     $("#btnPublicar").click(function () {
         if ($("#pubTitulo").val() != "" && $("#pubDropCategoria").val() && $("#pubDescricao").val() != "") {
-            addProject();
-            saveProjects();
+            if (checkLogin() == true) {
+                addProject();
+                saveProjects();
+                $('#formPublicar').attr('action', 'projetos.html');
+            } else {
+                $('#formPublicar').attr('action', "login.html" + "#publicar");
+            }
         }
     });
 
@@ -337,7 +361,15 @@ $(document).ready(function () {
                     addActiveUser(i);
                     saveActiveUser();
                     alert("Credenciais corretas, login com sucesso.");
-                    window.location.href = "../home.html";
+
+                    // Se foi parar a pagina do login depois de clicar em publicar um novo projeto ou nao
+                    var path = window.location.hash.substring(1)
+                    if (path == "publicar") {
+                        window.location.href = "publicar.html";
+                        $('#formLogin').attr('action', "publicar.html");
+                    } else {
+                        $('#formLogin').attr('action', "../home.html");
+                    }
                     break;
                 } else if (i == arrayUsers.length - 1) {
                     alert("Credenciais incorretas, tente novamente.");
