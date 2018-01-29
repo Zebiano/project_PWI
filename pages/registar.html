@@ -55,7 +55,7 @@
                     <center>
                         <h2 class="blue pb-4">Regista-te na nossa página!</h2>
                     </center>
-                    <form action="#">
+                    <form id="formRegistar">
                         <div class="form-group">
                             <input type="text" id="regNome" class="form-control" placeholder="Nome Completo" required>
                             <br>
@@ -69,7 +69,7 @@
                             <br>
                             <div class="form-group" id="">
                                 <label for="">Escola</label>
-                                <select class="form-control" name="" id="regDropEscola">
+                                <select class="form-control" name="" id="regDropEscola" required>
                                     <option value="vazio"></option>
                                     <option value="ESMAD">ESMAD</option>
                                     <option value="ESHT">ESHT</option>
@@ -77,11 +77,11 @@
                             </div>
                             <div class="form-group" id="curso">
                                 <label for="" id="labelCurso">Curso</label>
-                                <select class="form-control" name="" id="regDropCurso">
+                                <select class="form-control" name="" id="regDropCurso" required>
                                 </select>
                             </div>
                             <br>
-                            <button type="button" id="btnRegistar" class="btn btn-primary btn-lg float-right">Confirmar</button>
+                            <button type="submit" id="btnRegistar" class="btn btn-primary btn-lg float-right">Confirmar</button>
                         </div>
                     </form>
                 </div>

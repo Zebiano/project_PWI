@@ -46,13 +46,13 @@
     <div class="container">
         <h2 class="blue my-5">Novo projeto</h2>
         <hr>
-        <form action="#">
+        <form id="formPublicar">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Título" id="pubTitulo">
+                <input type="text" class="form-control" placeholder="Título" id="pubTitulo" required>
             </div>
             <div class="form-group">
                 <label for="">Categoria:</label>
-                <select class="form-control" id="pubDropCategoria">
+                <select class="form-control" id="pubDropCategoria" required>
                     <option></option>
                     <option>Programação</option>
                     <option>Design</option>
@@ -62,9 +62,9 @@
                 </select>
             </div>
             <div class="form-group">
-                <textarea class="form-control" rows="3" placeholder="Descrição" id="pubDescricao"></textarea>
+                <textarea class="form-control" rows="3" placeholder="Descrição" id="pubDescricao" required></textarea>
             </div>
-            <button type="button" class="btn btn-primary" id="btnPublicar">Confirmar</button>
+            <button type="submit" class="btn btn-primary" id="btnPublicar">Confirmar</button>
         </form>
     </div>
 
