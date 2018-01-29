@@ -58,10 +58,18 @@ $(document).ready(function () {
     });
     $("#navIconPuzzlePiece").click(function () {
         var pages = checkPath();
-        if (pages == false) {
-            window.location.href = 'pages/projetos.html'
+        if (checkLogin() == true) {
+            if (pages == false) {
+                window.location.href = 'pages/projetos.html'
+            } else {
+                window.location.href = 'projetos.html'
+            }
         } else {
-            window.location.href = 'projetos.html'
+            if (pages == false) {
+                window.location.href = 'pages/login.html' + "#projetos"
+            } else {
+                window.location.href = 'login.html' + "#projetos"
+            }
         }
     });
     $("#navIconPlus").click(function () {

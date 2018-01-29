@@ -29,7 +29,7 @@ function Project(id, titulo, autor, categoria, descricao, comentarios) {
     this.autor = autor;
     this.categoria = categoria;
     this.descricao = descricao;
-    this.comentarios = arrayComments;
+    this.comentarios = comentarios;
 }
 
 // Objeto para os comentarios
@@ -61,6 +61,7 @@ function getIp() {
 function resetVariables() {
     userExiste = false;
     activeUser;
+    arrayComments = [];
     //console.log("Reseted variables")
 }
 
@@ -84,8 +85,12 @@ function addAdminUsers() {
 
 // Adiciona projetos default. Se for para adicionar mais, adiciona-se aqui. Quando se adciiona tem que se mudar o numero tmb na funcao addProject()
 function addDefaultProjects() {
-    arrayProjects.push(new Project("-1", "Default 1", "Admin", "Programação", "Descrição default.", ""));
-    arrayProjects.push(new Project("-2", "Default 2", "Admin", "Design", "Descrição default.", ""));
+    arrayProjects.push(new Project("-1", "Default 1", "Admin", "Programação", "Descrição default.", arrayComments));
+    arrayProjects.push(new Project("-2", "Default 2", "Admin", "Design", "Descrição default.", arrayComments));
+
+    arrayComments.push(new Comment("mano", "pa po caralho"));
+    arrayComments.push(new Comment("haha", "acalmei um quitos"));
+    console.log(arrayComments);
 
     console.log("Adicionado projetos default ao array arrayProjects[] com sucesso.")
     console.log(arrayProjects);
@@ -110,9 +115,17 @@ function carregarPerfilProjeto() {
             if (arrayProjects[i].comentarios.length == 0) {
                 $("#perfilComentarios").append('<div class="card"><div class="card-body bg-light"><h4 class="card-title">Ainda não há comentários neste projeto.</h4></div></div><br>');
             } else {
+                //alert(JSON.stringify(arrayProjects[0].comentarios[0].arrayComments));
                 for (j = 0; j < arrayProjects[i].comentarios.length; j++) {
                     $("#perfilComentarios").append('<div class="card"><div class="card-body bg-light"><h4 class="card-title">' + arrayProjects[i].comentarios[j].autor + '</h4><hr style="border: 1px solid lightblue"><p class="card-text">' + arrayProjects[i].comentarios[j].descricao + '</p></div></div><br>');
                 }
+                /*for (j = 0; j < arrayProjects[i].comentarios.length; j++) {
+                    for (q = 0; q < arrayProjects[i].comentarios[j].length; q++) {
+                        alert(JSON.stringify(arrayProjects[i].comentarios[j].autor[q]));
+                        $("#perfilComentarios").append('<div class="card"><div class="card-body bg-light"><h4 class="card-title">' + arrayProjects[i].comentarios[j].autor[q] + '</h4><hr style="border: 1px solid lightblue"><p class="card-text">' + arrayProjects[i].comentarios[j].descricao[q] + '</p></div></div><br>');
+                    }
+                    //$("#perfilComentarios").append('<div class="card"><div class="card-body bg-light"><h4 class="card-title">' + arrayProjects[i].comentarios[j].nome + '</h4><hr style="border: 1px solid lightblue"><p class="card-text">' + arrayProjects[i].comentarios[j].descricao + '</p></div></div><br>');
+                }*/
             }
             break;
         }
@@ -152,11 +165,18 @@ function addProject() {
 }
 
 // Adiciona comentarios ao array arrayComments[]
-function addComment() {
-    arrayComments.push(new Comment(
-        activeUser.autor,
-        $("#escreverComment").val()
-    ));
+function addComment(autor, descricao) {
+    if (autor != undefined && descricao != undefined) {
+        arrayComments.push(new Comment(
+            autor,
+            descricao
+        ));
+    } else {
+        arrayComments.push(new Comment(
+            activeUser.nome,
+            $("#txtComment").val()
+        ));
+    }
     console.log("New comment added: " + JSON.stringify(arrayComments[arrayComments.length - 1]));
     //console.log(arrayComments);
     alert("Novo comentário registado com sucesso!");
@@ -167,6 +187,18 @@ function addComment() {
 function addActiveUser(i) {
     activeUser = arrayUsers[i];
     //console.log(activeUser);
+}
+
+/* --- ADICIONA ARRAY A OBJETO --- */
+// Guarda o array arrayComments[] no objeto Project
+function pushComment(idProj) {
+    for (i = 0; i < arrayProjects.length; i++) {
+        if (arrayProjects[i].id == idProj) {
+            arrayProjects[i].comentarios = arrayComments;
+            console.log('Guardado o arrayComments[] no objeto Project com sucesso.');
+            break;
+        }
+    }
 }
 
 /* --- LOCALSTORAGE --- */
@@ -365,11 +397,13 @@ $(document).ready(function () {
                     saveActiveUser();
                     alert("Credenciais corretas, login com sucesso.");
 
-                    // Se foi parar a pagina do login depois de clicar em publicar um novo projeto ou nao
                     var path = window.location.hash.substring(1)
-                    if (path == "publicar") {
+                    if (path == "publicar") { // Se o utilizador foi parar ao login ao clicar para publicar um projeto
                         window.location.href = "publicar.html";
                         $('#formLogin').attr('action', "publicar.html");
+                    } else if (path == "projetos") { // Se o utilizador foi parar ao login ao clicar para ver os projetos
+                        window.location.href = "projetos.html";
+                        $('#formLogin').attr('action', "projetos.html");
                     } else {
                         $('#formLogin').attr('action', "../home.html");
                     }
@@ -404,9 +438,59 @@ $(document).ready(function () {
 
     /* --- PAGINA perfilProjeto.html --- */
     // Carrega os dados do projeto caso o utlizador estiver na pagina perfilProjeto.html
-    if (window.location.pathname.indexOf("pages/perfilProjeto.html")) {
-        carregarPerfilProjeto();
+    if (window.location.pathname.indexOf("pages/perfilProjeto.html") != -1) {
+        if (checkLogin() == true) {
+            carregarPerfilProjeto();
+            $("#newComment").hide();
+        } else {
+            var pages = checkPath();
+            if (pages == false) {
+                window.location.href = 'pages/login.html'
+            } else {
+                window.location.href = 'login.html'
+            }
+        }
     }
+
+    // Pop up de uma textarea para comentar
+    $("#btnAddComment").click(function () {
+        $("#btnAddComment").hide();
+        $("#newComment").show();
+
+        $("#btnConfirmComment").click(function () {
+            console.log("-------------");
+            // Limpar o array arrayComments[]
+            resetVariables();
+
+            // primeiro buscar e gravar os comments do projeto para o array
+            for (i = 0; i < arrayProjects.length; i++) {
+                if (arrayProjects[i].id == window.location.hash.substring(7)) {
+                    // Importante este variavel ser declarada fora porque senao pode ocorrer um ciclo for infinito na proxima linha
+                    var length = arrayProjects[i].comentarios.length;
+                    for (j = 0; j < length; j++) {
+                        alert(arrayProjects[i].comentarios.length);
+                        addComment(arrayProjects[i].comentarios[j].autor, arrayProjects[i].comentarios[j].descricao);
+                    }
+                    break;
+                }
+            }
+
+            // depois adicioanr um novo comment ao array
+            console.log(arrayComments);
+            addComment();
+            console.log(arrayComments);
+
+            // depois fazer push ao array
+            pushComment(window.location.hash.substring(7));
+
+            // Depois por o novo objeto project na localstorage
+            saveProjects();
+
+            console.log(arrayProjects);
+
+            location.reload();
+        });
+    });
 
     /* --- GERAR FOOTER --- */
     $(".bottomFooter").append('<div class="row"><div class="col-4 align-middle"><img src="../assets/common/img/logoPB.png" alt="LOGO"></div><div class="col-4 align-middle"><a class="link" href="https://cdn.menprovement.com/wp-content/uploads/2014/10/cool-guy1.jpg">Sobre nós</a></div><div class="col-4"><h4>Contactos</h4><p>9160151@esmad.ipp.pt</p><p>9160272@esmad.ipp.pt</p></div></div>');

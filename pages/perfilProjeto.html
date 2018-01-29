@@ -50,12 +50,34 @@
         <label id="perfilDescricao"></label>
         <br>
         <br>
-        <h3>Comentários:</h3>
+        <h4>Comentários:
+            <a id="btnAddComment" class="btn btn-secondary pull-right" role="button">Adicionar comentário</a>
+        </h4>
+        <div id="newComment">
+            <textarea id="txtComment" cols="135" rows="5"></textarea>
+            <br>
+            <a id="btnConfirmComment" class="btn btn-success" role="button">Confirmar comentário</a>
+        </div>
+        <br>
         <div id="perfilComentarios"></div>
     </div>
 
-    <!--FOOTER COMUM A TODAS AS PAGINAS-->
-    <div class="arial footer bottomFooter text-center"></div>
+    <!-- FOOTER -->
+    <div class="footer text-center">
+        <div class="row">
+            <div class="col-4 align-middle">
+                <img src="../assets/common/img/logoPB.png" alt="LOGO">
+            </div>
+            <div class="col-4 align-middle">
+                <a class="link" href="https://cdn.menprovement.com/wp-content/uploads/2014/10/cool-guy1.jpg">Sobre nós</a>
+            </div>
+            <div class="col-4">
+                <h4>Contactos</h4>
+                <p>9160151@esmad.ipp.pt</p>
+                <p>9160272@esmad.ipp.pt</p>
+            </div>
+        </div>
+    </div>
 
     <!-- JQuery -->
     <script src="../assets/libraries/jquery/3.2.1/jquery-3.2.1.min.js"></script>
