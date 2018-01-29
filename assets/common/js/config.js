@@ -8,6 +8,7 @@ var arrayComments = [];
 var ip;
 var activeUser;
 var userExiste = false;
+var defaultProjects;
 
 /* --- CONSTRUTORES --- */
 // Objeto para os utilizadores
@@ -76,14 +77,16 @@ function checkLogin() {
 function addAdminUsers() {
     arrayUsers.push(new User("Sebastião Barros", "9160272", "9160272@esmad.ipp.pt", "admin", "ESMAD", "Tecnologias e Sistemas de Informação para Web", 1));
     arrayUsers.push(new User("Hugo Barreiro", "9160151", "9160151@esmad.ipp.pt", "admin", "ESMAD", "Tecnologias e Sistemas de Informação para Web", 1));
+
     console.log("Adicionado utilizadores admin ao array arrayUsers[] com sucesso.")
     console.log(arrayUsers);
 }
 
-// Adiciona projetos default. Se for para adicionar mais, adiciona-se aqui
+// Adiciona projetos default. Se for para adicionar mais, adiciona-se aqui. Quando se adciiona tem que se mudar o numero tmb na funcao addProject()
 function addDefaultProjects() {
     arrayProjects.push(new Project("-1", "Default 1", "Admin", "Programação", "Descrição default.", ""));
     arrayProjects.push(new Project("-2", "Default 2", "Admin", "Design", "Descrição default.", ""));
+
     console.log("Adicionado projetos default ao array arrayProjects[] com sucesso.")
     console.log(arrayProjects);
 }
@@ -136,7 +139,7 @@ function addUser() {
 // Adicionar projetos ao array arrayProjects[]
 function addProject() {
     arrayProjects.push(new Project(
-        arrayProjects.length,
+        arrayProjects.length - 2, // 2 = numero de projetos default
         $('#pubTitulo').val(),
         activeUser.nome,
         $('#pubDropCategoria option:selected').text(),
@@ -379,12 +382,13 @@ $(document).ready(function () {
     });
 
     /* --- PAGINA projetos.html --- */
-    // Muda o cursor
-    $('#projectsTableBody tr').css('cursor', 'pointer');
-
     // Carrega os dados da tabela caso o utlizador estiver na pagina projetos.html
-    if (window.location.pathname.indexOf("pages/projetos.html")) {
-        carregarTabelaProjetos();
+    if (window.location.pathname.indexOf("pages/projetos.html") != -1) {
+        if (checkLogin() == true) {
+            carregarTabelaProjetos();
+        } else {
+            window.location.href = "login.html";
+        }
     }
 
     // Abrir pagina perfilProjeto.html ao clicar na row da tabela
@@ -394,6 +398,9 @@ $(document).ready(function () {
             carregarPerfilProjeto();
         });
     })
+
+    // Muda o cursor
+    $('#projectsTableBody tr').css('cursor', 'pointer');
 
     /* --- PAGINA perfilProjeto.html --- */
     // Carrega os dados do projeto caso o utlizador estiver na pagina perfilProjeto.html
