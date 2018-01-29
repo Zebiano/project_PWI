@@ -94,13 +94,13 @@ function addDefaultProjects() {
 // Preencher a tabela com todos os projetos
 function carregarTabelaProjetos() {
     for (var i = 0; i < arrayProjects.length; i++) {
-        $("#projectsTableBody").append('<tr><td>' + arrayProjects[i].autor + '</td><td class="tituloProjeto">' + arrayProjects[i].titulo + '</td><td>' + arrayProjects[i].categoria + '</td></tr>');
+        $("#projectsTableBody").append('<tr id="projId' + arrayProjects[i].id + '"><td>' + arrayProjects[i].autor + '</td><td class="tituloProjeto">' + arrayProjects[i].titulo + '</td><td>' + arrayProjects[i].categoria + '</td></tr>');
     }
 }
 
 // Preenche os dados do projeto
 function carregarPerfilProjeto() {
-    var id = window.location.hash.substring(1);
+    var id = window.location.hash.substring(7);
 
     for (i = 0; i < arrayProjects.length; i++) {
         if (id == arrayProjects[i].id) {
@@ -394,7 +394,7 @@ $(document).ready(function () {
     // Abrir pagina perfilProjeto.html ao clicar na row da tabela
     $("#projectsTableBody tr").on('click', function () {
         $(this).each(function () {
-            window.location.href = 'perfilProjeto.html' + '#' + $(this).find(".idProjeto").html();
+            window.location.href = 'perfilProjeto.html' + '#' + $(this).attr("id");
             carregarPerfilProjeto();
         });
     })
