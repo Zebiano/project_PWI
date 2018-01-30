@@ -91,6 +91,7 @@ function addDefaultProjects() {
     // Default comments
     arrayComments.push(new Comment("Admin", "Default comment 1"));
     arrayComments.push(new Comment("Admin", "Default comment 2"));
+    arrayComments.push(new Comment("Admin", "Default comment 3"));
     console.log(arrayComments);
 
     console.log("Adicionado projetos default ao array arrayProjects[] com sucesso.")
