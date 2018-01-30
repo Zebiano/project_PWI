@@ -74,7 +74,7 @@ function checkLogin() {
     }
 }
 
-// Adiciona utilizadores admin. Se for para adicionar mais, adiciona-se aqui. Admins têm a ip = "0"
+// Adiciona utilizadores admin. Se for para adicionar mais, adiciona-se aqui. Admins têm a ip = "1"
 function addAdminUsers() {
     arrayUsers.push(new User("Sebastião Barros", "9160272", "9160272@esmad.ipp.pt", "admin", "ESMAD", "Tecnologias e Sistemas de Informação para Web", 1));
     arrayUsers.push(new User("Hugo Barreiro", "9160151", "9160151@esmad.ipp.pt", "admin", "ESMAD", "Tecnologias e Sistemas de Informação para Web", 1));
