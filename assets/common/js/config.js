@@ -100,7 +100,7 @@ function addDefaultProjects() {
 // Preencher a tabela com todos os projetos
 function carregarTabelaProjetos() {
     for (var i = 0; i < arrayProjects.length; i++) {
-        $("#projectsTableBody").append('<tr id="projId' + arrayProjects[i].id + '"><td>' + arrayProjects[i].autor + '</td><td class="tituloProjeto">' + arrayProjects[i].titulo + '</td><td>' + arrayProjects[i].categoria + '</td></tr>');
+        $("#projectsTableBody").append('<tr id="projId' + arrayProjects[i].id + '"><td>' + arrayProjects[i].titulo + '</td><td class="tituloProjeto">' + arrayProjects[i].categoria + '</td><td>' + arrayProjects[i].autor + '</td></tr>');
     }
 }
 
@@ -116,17 +116,9 @@ function carregarPerfilProjeto() {
             if (arrayProjects[i].comentarios.length == 0) {
                 $("#perfilComentarios").append('<div class="card"><div class="card-body bg-light"><h4 class="card-title">Ainda não há comentários neste projeto.</h4></div></div><br>');
             } else {
-                //alert(JSON.stringify(arrayProjects[0].comentarios[0].arrayComments));
                 for (j = 0; j < arrayProjects[i].comentarios.length; j++) {
                     $("#perfilComentarios").append('<div class="card"><div class="card-body bg-light"><h4 class="card-title">' + arrayProjects[i].comentarios[j].autor + '</h4><hr style="border: 1px solid lightblue"><p class="card-text">' + arrayProjects[i].comentarios[j].descricao + '</p></div></div><br>');
                 }
-                /*for (j = 0; j < arrayProjects[i].comentarios.length; j++) {
-                    for (q = 0; q < arrayProjects[i].comentarios[j].length; q++) {
-                        alert(JSON.stringify(arrayProjects[i].comentarios[j].autor[q]));
-                        $("#perfilComentarios").append('<div class="card"><div class="card-body bg-light"><h4 class="card-title">' + arrayProjects[i].comentarios[j].autor[q] + '</h4><hr style="border: 1px solid lightblue"><p class="card-text">' + arrayProjects[i].comentarios[j].descricao[q] + '</p></div></div><br>');
-                    }
-                    //$("#perfilComentarios").append('<div class="card"><div class="card-body bg-light"><h4 class="card-title">' + arrayProjects[i].comentarios[j].nome + '</h4><hr style="border: 1px solid lightblue"><p class="card-text">' + arrayProjects[i].comentarios[j].descricao + '</p></div></div><br>');
-                }*/
             }
             break;
         }
@@ -152,6 +144,7 @@ function addUser() {
 
 // Adicionar projetos ao array arrayProjects[]
 function addProject() {
+    alert($('#pubDescricao').val());
     arrayProjects.push(new Project(
         arrayProjects.length - 2, // 2 = numero de projetos default
         $('#pubTitulo').val(),
