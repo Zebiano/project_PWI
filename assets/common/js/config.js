@@ -111,7 +111,7 @@ function carregarPerfilProjeto() {
     for (i = 0; i < arrayProjects.length; i++) {
         if (id == arrayProjects[i].id) {
             $("#perfilTitulo").append(arrayProjects[i].titulo);
-            $("#perfilMiniHeader").append('<span style="font-size:15px" class="badge badge-primary">' + arrayProjects[i].autor + '</span> <span style="font-size:15px" class="badge badge-success pull-right">' + arrayProjects[i].categoria + '</span>');
+            $("#perfilMiniHeader").append('<span style="font-size:15px" class="badge badge-primary">' + arrayProjects[i].autor + '</span> <span style="font-size:15px" class="badge badge-warning pull-right">' + arrayProjects[i].categoria + '</span>');
             $("#perfilDescricao").append(arrayProjects[i].descricao);
             if (arrayProjects[i].comentarios.length == 0) {
                 $("#perfilComentarios").append('<div class="card"><div class="card-body bg-light"><h4 class="card-title">Ainda não há comentários neste projeto.</h4></div></div><br>');
