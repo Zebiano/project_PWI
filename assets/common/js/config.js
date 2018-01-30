@@ -88,8 +88,9 @@ function addDefaultProjects() {
     arrayProjects.push(new Project("-1", "Default 1", "Admin", "Programação", "Descrição default.", arrayComments));
     arrayProjects.push(new Project("-2", "Default 2", "Admin", "Design", "Descrição default.", arrayComments));
 
-    arrayComments.push(new Comment("mano", "pa po caralho"));
-    arrayComments.push(new Comment("haha", "acalmei um quitos"));
+    // Default comments
+    arrayComments.push(new Comment("Admin", "Default comment 1"));
+    arrayComments.push(new Comment("Admin", "Default comment 2"));
     console.log(arrayComments);
 
     console.log("Adicionado projetos default ao array arrayProjects[] com sucesso.")
@@ -179,7 +180,6 @@ function addComment(autor, descricao) {
     }
     console.log("New comment added: " + JSON.stringify(arrayComments[arrayComments.length - 1]));
     //console.log(arrayComments);
-    alert("Novo comentário registado com sucesso!");
 }
 
 /* --- ADICIONAR OBJETOS A VARIAVEIS --- */
@@ -458,37 +458,29 @@ $(document).ready(function () {
         $("#newComment").show();
 
         $("#btnConfirmComment").click(function () {
-            console.log("-------------");
-            // Limpar o array arrayComments[]
-            resetVariables();
+            if ($("#txtComment").val() != "") {
+                resetVariables(); // Limpar o array arrayComments[]
 
-            // primeiro buscar e gravar os comments do projeto para o array
-            for (i = 0; i < arrayProjects.length; i++) {
-                if (arrayProjects[i].id == window.location.hash.substring(7)) {
-                    // Importante este variavel ser declarada fora porque senao pode ocorrer um ciclo for infinito na proxima linha
-                    var length = arrayProjects[i].comentarios.length;
-                    for (j = 0; j < length; j++) {
-                        alert(arrayProjects[i].comentarios.length);
-                        addComment(arrayProjects[i].comentarios[j].autor, arrayProjects[i].comentarios[j].descricao);
+                // Buscar os comments da localStorage e gravarlos no array arrayComments[]
+                for (i = 0; i < arrayProjects.length; i++) {
+                    if (arrayProjects[i].id == window.location.hash.substring(7)) {
+                        // Importante este variavel ser declarada fora porque senao pode ocorrer um ciclo for infinito na proxima linha
+                        var length = arrayProjects[i].comentarios.length;
+                        for (j = 0; j < length; j++) {
+                            addComment(arrayProjects[i].comentarios[j].autor, arrayProjects[i].comentarios[j].descricao);
+                        }
+                        break;
                     }
-                    break;
                 }
+
+                addComment(); // Adicionar o novo comenario ao array
+                pushComment(window.location.hash.substring(7)); // Atualizar o array arrayProjects[] com o novo comentário
+                saveProjects(); // Atualizar a localStorage com o novo array arrayProjects[]
+
+                location.reload(); // Recarregar a pagina para mostrar o novo comentario
+            } else {
+                alert("Tem que escrever algo para poder comentar!");
             }
-
-            // depois adicioanr um novo comment ao array
-            console.log(arrayComments);
-            addComment();
-            console.log(arrayComments);
-
-            // depois fazer push ao array
-            pushComment(window.location.hash.substring(7));
-
-            // Depois por o novo objeto project na localstorage
-            saveProjects();
-
-            console.log(arrayProjects);
-
-            location.reload();
         });
     });
 
