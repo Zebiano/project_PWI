@@ -56,7 +56,7 @@ function getIp() {
     });
 }
 
-/* CODIGO GERAL */
+/* --- CODIGO GERAL --- */
 // Dar reset a variaveis
 function resetVariables() {
     userExiste = false;
@@ -83,7 +83,7 @@ function addAdminUsers() {
     console.log(arrayUsers);
 }
 
-// Adiciona projetos default. Se for para adicionar mais, adiciona-se aqui. Quando se adciiona tem que se mudar o numero tmb na funcao addProject()
+// Adiciona projetos default. Se for para adicionar mais, adiciona-se aqui. Quando se adiciona tem que se mudar o numero tmb na funcao addProject()
 function addDefaultProjects() {
     arrayProjects.push(new Project("-1", "Default 1", "Admin", "Programação", "Descrição default.", arrayComments));
     arrayProjects.push(new Project("-2", "Default 2", "Admin", "Design", "Descrição default.", arrayComments));
@@ -92,7 +92,6 @@ function addDefaultProjects() {
     arrayComments.push(new Comment("Admin", "Default comment 1"));
     arrayComments.push(new Comment("Admin", "Default comment 2"));
     arrayComments.push(new Comment("Admin", "Default comment 3"));
-    console.log(arrayComments);
 
     console.log("Adicionado projetos default ao array arrayProjects[] com sucesso.")
     console.log(arrayProjects);
@@ -127,7 +126,7 @@ function carregarPerfilProjeto() {
 }
 
 /* --- ADICIONAR OBJETOS AOS ARRAYS --- */
-// Adiciona utilizadores ao array arrayUsers[]
+// Adiciona objetos User ao array arrayUsers[]
 function addUser() {
     arrayUsers.push(new User(
         $("#regNome").val(),
@@ -138,14 +137,13 @@ function addUser() {
         $("#regDropCurso option:selected").text(),
         ip
     ));
-    console.log("New user added: " + JSON.stringify(arrayUsers[arrayUsers.length - 1]));
+    console.log("Adicionado novo User: " + JSON.stringify(arrayUsers[arrayUsers.length - 1]));
     //console.log(arrayUsers);
     alert("Novo utilizador registado com sucesso!");
 }
 
-// Adicionar projetos ao array arrayProjects[]
+// Adiciona objetos Project ao array arrayProjects[]
 function addProject() {
-    alert($('#pubDescricao').val());
     arrayProjects.push(new Project(
         arrayProjects.length - 2, // 2 = numero de projetos default
         $('#pubTitulo').val(),
@@ -154,12 +152,12 @@ function addProject() {
         $('#pubDescricao').val(),
         arrayComments
     ));
-    console.log("New Project added: " + JSON.stringify(arrayProjects[arrayProjects.length - 1]));
+    console.log("Adicionado novo projeto: " + JSON.stringify(arrayProjects[arrayProjects.length - 1]));
     //console.log(arrayProjects);
     alert("Novo projeto registado com sucesso!");
 }
 
-// Adiciona comentarios ao array arrayComments[]
+// Adiciona objetos Comment ao array arrayComments[]
 function addComment(autor, descricao) {
     if (autor != undefined && descricao != undefined) {
         arrayComments.push(new Comment(
@@ -172,7 +170,7 @@ function addComment(autor, descricao) {
             $("#txtComment").val()
         ));
     }
-    console.log("New comment added: " + JSON.stringify(arrayComments[arrayComments.length - 1]));
+    console.log("Adicionado novo comentário: " + JSON.stringify(arrayComments[arrayComments.length - 1]));
     //console.log(arrayComments);
 }
 
@@ -183,7 +181,7 @@ function addActiveUser(i) {
     //console.log(activeUser);
 }
 
-/* --- ADICIONA ARRAY A OBJETO --- */
+/* --- ADICIONAR ARRAY A OBJETO --- */
 // Guarda o array arrayComments[] no objeto Project
 function pushComment(idProj) {
     for (i = 0; i < arrayProjects.length; i++) {
@@ -207,7 +205,9 @@ function checkLocalStorage() {
         addAdminUsers();
         saveUsers(); // Guarda o array arrayUsers[] na localStorage
     }
+
     console.log("---");
+
     // Verifica pela key "Projetos"
     if ("Projects" in localStorage) {
         console.log('Existe a key "Projects".');
@@ -217,7 +217,9 @@ function checkLocalStorage() {
         addDefaultProjects();
         saveProjects(); // Guarda o array arrayProjects[] na localStorage
     }
+
     console.log("---");
+
     // Verifica pela key "ActiveUser"
     if ("ActiveUser" in localStorage) {
         console.log('Existe a key "ActiveUser".');
@@ -252,13 +254,13 @@ function loadActiveUser() {
 // Guarda o array arrayUsers[] na localStoarge com a key "Users"
 function saveUsers() {
     localStorage.setItem("Users", JSON.stringify(arrayUsers));
-    console.log('Guardado o arrayUsers[] na localStorage com a key "Users" com sucesso.');
+    console.log('Guardado o array arrayUsers[] na localStorage com a key "Users" com sucesso.');
 }
 
 // Guarda o array arrayProjects[] na localStoarge com a key "Projects"
 function saveProjects() {
     localStorage.setItem("Projects", JSON.stringify(arrayProjects));
-    console.log('Guardado o arrayProjects[] na localStorage com a key "Projects" com sucesso.');
+    console.log('Guardado o array arrayProjects[] na localStorage com a key "Projects" com sucesso.');
 }
 
 // Guarda o Objeto activeUser na localStoarge com a key "ActiveUser"
@@ -269,6 +271,7 @@ function saveActiveUser() {
     }
 }
 
+/* --- ELIMINAR --- */
 // Elimina o especificado User do array e atualiza a localStorage
 function deleteUser(delUser) {
     for (i = 0; i < arrayUsers.length; i++) {
@@ -277,7 +280,7 @@ function deleteUser(delUser) {
             saveUsers();
             break;
         } else {
-            alert("You're trying to delete a user that isn't registered!");
+            alert("Está a tentar eliminar um utilizador que não existe!");
         }
     }
 }
@@ -290,7 +293,7 @@ function deleteProject(delProject) {
             saveProjects();
             break;
         } else {
-            alert("You're trying to delete a project that isn't registered!");
+            alert("Está a tentar eliminar um projeto que não existe!");
         }
     }
 }
@@ -353,7 +356,7 @@ $(document).ready(function () {
                         break;
                     }
                 }
-                // Caso o utilizador nao "existir" regista-o
+                // Caso o utilizador nao estiver ja registado, regista-o
                 if (userExiste == false) {
                     addUser();
                     saveUsers();
