@@ -39,6 +39,13 @@ $(document).ready(function () {
         activeBolinha4 = !activeBolinha4;
     });
 
+    // Demonstra ao utilziador que esta signed-in
+    if (checkLogin() == true) {
+        $(".navBg").append('<h1>' + activeUser.nome.substring(0, 1) + '</h1>');
+    } else {
+        $(".navBg").append('<i class="fa fa-bars fa-3x"></i>');
+    }
+
     $("#navIconSingIn").click(function () {
         var pages = checkPath();
         if (checkLogin() == true) {
